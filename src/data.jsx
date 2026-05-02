@@ -4,7 +4,7 @@
 const PRODUCTS = [
   {
     id: "01",
-    code: "ZG·01",
+    code: "01",
     name: "TEE",
     price: 149,
     sizes: ["S", "M", "L", "XL"],
@@ -13,7 +13,7 @@ const PRODUCTS = [
   },
   {
     id: "02",
-    code: "ZG·02",
+    code: "02",
     name: "HOODIE",
     price: 389,
     sizes: ["S", "M", "L", "XL"],
@@ -22,7 +22,7 @@ const PRODUCTS = [
   },
   {
     id: "03",
-    code: "ZG·03",
+    code: "03",
     name: "CAP",
     price: 129,
     sizes: ["OS"],
@@ -31,7 +31,7 @@ const PRODUCTS = [
   },
   {
     id: "04",
-    code: "ZG·04",
+    code: "04",
     name: "TOTE",
     price: 89,
     sizes: ["OS"],
@@ -40,7 +40,7 @@ const PRODUCTS = [
   },
   {
     id: "05",
-    code: "ZG·05",
+    code: "05",
     name: "CREWNECK",
     price: 299,
     sizes: ["S", "M", "L", "XL"],
@@ -49,7 +49,7 @@ const PRODUCTS = [
   },
   {
     id: "06",
-    code: "ZG·06",
+    code: "06",
     name: "BEANIE",
     price: 119,
     sizes: ["OS"],
