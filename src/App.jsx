@@ -99,7 +99,7 @@ function ProductStage({ product, direction, onEnter }) {
         animation: `slideIn${direction === 1 ? "Right" : "Left"} 700ms cubic-bezier(.22,.9,.3,1)`,
       }}
     >
-      <ProductArt name={product.name} />
+      <ProductArt name={product.name} image={product.image} />
     </div>
   );
 }
@@ -137,7 +137,7 @@ function GridView({ products, onPick, liked, toggleLike }) {
           onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
         >
           <div style={{ position: "absolute", inset: 0 }}>
-            <ProductArt name={p.name} />
+            <ProductArt name={p.name} image={p.image} />
           </div>
           {/* corner code */}
           <div style={{
@@ -191,7 +191,7 @@ function SizeRow({ product, selected, onSelect }) {
         textTransform: "uppercase",
         color: "rgba(255,255,255,0.7)",
       }}>
-        ONE SIZE
+        {`ONE SIZE${product.oneSizeNote ? ` (${product.oneSizeNote})` : ""}`}
       </div>
     );
   }
@@ -284,7 +284,7 @@ function CartDrawer({ open, items, onClose, onRemove, onQty }) {
                 flexShrink: 0,
               }}>
                 <div style={{ position: "absolute", inset: 0, transform: "scale(0.7)" }}>
-                  <ProductArt name={it.name} />
+                  <ProductArt name={it.name} image={it.image} />
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -400,7 +400,7 @@ function FavDrawer({ open, products, liked, onClose, onPick, toggleLike }) {
                 flexShrink: 0,
               }}>
                 <div style={{ position: "absolute", inset: 0, transform: "scale(0.7)" }}>
-                  <ProductArt name={p.name} />
+                  <ProductArt name={p.name} image={p.image} />
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -488,7 +488,19 @@ function App() {
     setCart(c => {
       const existing = c.find(x => x.key === key);
       if (existing) return c.map(x => x.key === key ? { ...x, qty: x.qty + 1 } : x);
-      return [...c, { key, id: product.id, code: product.code, name: product.name, price: product.price, size, qty: 1 }];
+      return [
+        ...c,
+        {
+          key,
+          id: product.id,
+          code: product.code,
+          name: product.name,
+          image: product.image,
+          price: product.price,
+          size,
+          qty: 1
+        }
+      ];
     });
     setAdding(true);
     setTimeout(() => setAdding(false), 900);

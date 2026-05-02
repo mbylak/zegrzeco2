@@ -69,7 +69,7 @@ const SHAPES = {
   ),
 };
 
-function ProductArt({ name }) {
+function ProductArt({ name, image }) {
   return (
     <div style={{
       position: "absolute",
@@ -80,7 +80,20 @@ function ProductArt({ name }) {
       pointerEvents: "none",
     }}>
       <div style={{ width: "min(62vh, 62vw)", height: "min(62vh, 62vw)" }}>
-        {SHAPES[name] ?? SHAPES.TEE}
+        {image ? (
+          <img
+            src={image}
+            alt={name}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              display: "block",
+            }}
+          />
+        ) : (
+          SHAPES[name] ?? SHAPES.TEE
+        )}
       </div>
     </div>
   );
