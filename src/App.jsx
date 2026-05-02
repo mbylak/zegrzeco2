@@ -288,7 +288,9 @@ function CartDrawer({ open, items, onClose, onRemove, onQty }) {
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.25em", opacity: 0.5 }}>{it.code} · {it.size}</div>
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.25em", opacity: 0.5 }}>
+                  {it.code} · {it.name} · {it.size}
+                </div>
                 <div style={{ fontSize: 15, fontWeight: 600, marginTop: 2 }}>{it.price * it.qty}<span style={{ opacity: 0.5, marginLeft: 3, fontSize: 12 }}>zł</span></div>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
