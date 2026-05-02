@@ -454,9 +454,49 @@ function App() {
   const [liked, setLiked] = useState(new Set());
   const [view, setView] = useState("stage"); // stage | grid
   const [adding, setAdding] = useState(false);
+  const [imagesReady, setImagesReady] = useState(false);
+  const [preloadProgress, setPreloadProgress] = useState(0);
   const lastWheelAtRef = useRef(0);
+  const imageSources = useMemo(
+    () => PRODUCTS.map(p => p.image).filter(Boolean),
+    []
+  );
 
   useEffect(() => { localStorage.setItem("zegrze-idx", String(idx)); }, [idx]);
+
+  // Preload all product images once to avoid delayed per-product loading.
+  useEffect(() => {
+    if (imageSources.length === 0) {
+      setImagesReady(true);
+      setPreloadProgress(1);
+      return;
+    }
+    let cancelled = false;
+    let done = 0;
+    const total = imageSources.length;
+    const timeoutId = setTimeout(() => {
+      if (!cancelled) setImagesReady(true);
+    }, 5000);
+    const markDone = () => {
+      done += 1;
+      if (cancelled) return;
+      setPreloadProgress(done / total);
+      if (done >= total) {
+        clearTimeout(timeoutId);
+        setImagesReady(true);
+      }
+    };
+    imageSources.forEach(src => {
+      const img = new Image();
+      img.onload = markDone;
+      img.onerror = markDone;
+      img.src = src;
+    });
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
+    };
+  }, [imageSources]);
 
   // Tweak-mode wiring
   useEffect(() => {
@@ -556,6 +596,49 @@ function App() {
       }}
     >
       <Backdrop hue={tweaks.hue} variant={tweaks.backdrop} />
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 90,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 14,
+          background: "rgba(0,0,0,0.42)",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+          opacity: imagesReady ? 0 : 1,
+          pointerEvents: imagesReady ? "none" : "auto",
+          transition: "opacity 480ms ease",
+        }}
+      >
+        <div style={{
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: 11,
+          letterSpacing: "0.3em",
+          opacity: 0.75,
+          textTransform: "uppercase",
+        }}>
+          Ładowanie
+        </div>
+        <div style={{
+          width: 180,
+          height: 4,
+          borderRadius: 999,
+          overflow: "hidden",
+          background: "rgba(255,255,255,0.16)",
+        }}>
+          <div style={{
+            width: `${Math.round(preloadProgress * 100)}%`,
+            height: "100%",
+            borderRadius: 999,
+            background: "rgba(255,255,255,0.92)",
+            transition: "width 320ms ease",
+          }}/>
+        </div>
+      </div>
 
       {/* Top bar — floating elements aligned on a single row */}
       <div style={{
